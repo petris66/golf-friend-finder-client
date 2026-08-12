@@ -1,1 +1,15 @@
-body{font-family:Arial,sans-serif;background:#f5f5f5;margin:0}.container{max-width:600px;margin:auto;padding:20px}input,button{width:100%;padding:12px;margin:8px 0;font-size:16px}#results{background:white;padding:15px;border-radius:8px}
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;background:#f5f5f5;color:#222}
+.container{max-width:620px;margin:0 auto;padding:22px}
+h1{margin-bottom:6px}
+h2{margin-top:24px}
+.lead{margin-top:0;color:#555}
+.field span{display:block;font-weight:700;margin-bottom:6px}
+input[type=date]{width:100%;padding:12px;font-size:16px}
+.courses{background:#fff;border-radius:10px;padding:10px 14px;margin-bottom:18px}
+.course-label{display:flex;align-items:center;gap:10px;padding:10px 0}
+.course-label input{width:auto}
+button{width:100%;padding:13px;margin:8px 0;border:0;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer}
+button.secondary{font-weight:600}
+.results-section{margin-top:22px}
+.results{background:#fff;padding:15px;border-radius:10px;white-space:pre-wrap}

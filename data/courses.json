@@ -1,4 +1,8 @@
 {
-  "hirvihaara": {"name":"Hirvihaaran Golf 18r"},
-  "gumbole": {"name":"Gumböle Golf 18r"}
+  "hirvihaara": {
+    "name": "Hirvihaaran Golf 18r"
+  },
+  "gumbole": {
+    "name": "Gumböle Golf 18r"
+  }
 }

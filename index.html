@@ -8,13 +8,24 @@
 </head>
 <body>
 <main class="container">
-<h1>Golf Friend Finder</h1>
-<label>Päivä <input id="date" type="date"></label>
-<h2>Kentät</h2>
-<div id="courses"></div>
-<button id="search">Hae varaukset</button>
-<h2>Tulokset</h2>
-<div id="results">Ei vielä hakua</div>
+  <h1>Golf Friend Finder</h1>
+  <p class="lead">Valitse päivä ja kentät.</p>
+
+  <label class="field">
+    <span>Päivä</span>
+    <input id="date" type="date">
+  </label>
+
+  <h2>Kentät</h2>
+  <div id="courses" class="courses"></div>
+
+  <button id="search" type="button">Hae varaukset</button>
+  <button id="wisegolf-test" class="secondary" type="button">WiseGolf-testi</button>
+
+  <section class="results-section">
+    <h2>Tulokset</h2>
+    <div id="results" class="results">Ei vielä hakua.</div>
+  </section>
 </main>
 <script src="app.js"></script>
 </body>
