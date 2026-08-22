@@ -1,64 +1,71 @@
-const dateInput = document.getElementById("date");
-const coursesEl = document.getElementById("courses");
-const resultsEl = document.getElementById("results");
+const BACKEND="https://golf-friend-finder-backend.vercel.app";
 
-dateInput.valueAsDate = new Date();
+const coursesEl=document.getElementById("courses");
+const resultsEl=document.getElementById("results");
+const playerInput=document.getElementById("player");
 
-async function loadCourses() {
-  try {
-    const response = await fetch("data/courses.json");
-    if (!response.ok) throw new Error("Kenttälistaa ei voitu ladata.");
+async function loadCourses(){
+ const r=await fetch("data/courses.json");
+ const courses=await r.json();
 
-    const courses = await response.json();
-
-    coursesEl.innerHTML = Object.entries(courses).map(([id, course]) => `
-      <label class="course-label">
-        <input type="checkbox" value="${id}">
-        <span>${course.name}</span>
-      </label>
-    `).join("");
-  } catch (error) {
-    coursesEl.textContent = error.message;
-  }
+ coursesEl.innerHTML=Object.entries(courses).map(([id,c])=>`
+ <label class="course-label">
+ <input type="checkbox" value="${id}">
+ <span>${c.name}</span>
+ </label>`).join("");
 }
 
-function getSelection() {
-  const courseIds = [...coursesEl.querySelectorAll('input[type="checkbox"]:checked')]
-    .map(input => input.value);
-
-  return {
-    date: dateInput.value,
-    courses: courseIds
-  };
+function selectedCourses(){
+ return [...coursesEl.querySelectorAll("input:checked")].map(x=>x.value);
 }
 
-document.getElementById("search").addEventListener("click", () => {
-  const selection = getSelection();
+function playerNames(){
+ return playerInput.value.toLowerCase()
+ .split(",")
+ .map(x=>x.trim())
+ .filter(Boolean);
+}
 
-  if (!selection.date) {
-    resultsEl.textContent = "Valitse päivämäärä.";
-    return;
+async function search(){
+ const courses=selectedCourses();
+ if(!courses.length){
+  resultsEl.textContent="Valitse vähintään yksi kenttä.";
+  return;
+ }
+
+ resultsEl.textContent="Haetaan...";
+
+ const days=Number(document.getElementById("days").value);
+ const names=playerNames();
+ let html="";
+
+ const start=new Date();
+
+ for(let i=0;i<days;i++){
+  const d=new Date(start);
+  d.setDate(start.getDate()+i);
+  const date=d.toISOString().slice(0,10);
+
+  const r=await fetch(`${BACKEND}/api/search?date=${date}&courses=${courses.join(",")}`);
+  const data=await r.json();
+
+  for(const c of data.results||[]){
+   for(const p of c.players||[]){
+    const name=`${p.firstName||""} ${p.familyName||""}`.trim();
+    const lower=name.toLowerCase();
+
+    if(!names.length || names.some(n=>lower.includes(n))){
+      html+=`<div class="row"><b>${c.course}</b><br>${name}<br>${p.dateTimeStart||date}</div>`;
+    }
+   }
   }
+ }
 
-  if (selection.courses.length === 0) {
-    resultsEl.textContent = "Valitse vähintään yksi kenttä.";
-    return;
-  }
+ resultsEl.innerHTML=html || "Ei löytynyt pelaajaa.";
+}
 
-  resultsEl.textContent =
-    `Valittu päivä: ${selection.date}\n` +
-    `Valitut kentät: ${selection.courses.join(", ")}\n\n` +
-    "Varsinainen WiseGolf-haku liitetään seuraavassa vaiheessa.";
-});
-
-document.getElementById("wisegolf-test").addEventListener("click", () => {
-  const selection = getSelection();
-
-  resultsEl.textContent =
-    "WiseGolf-integraation testipohja toimii.\n\n" +
-    `Päivä: ${selection.date || "ei valittu"}\n` +
-    `Kentät: ${selection.courses.length ? selection.courses.join(", ") : "ei valittu"}\n\n` +
-    "Authorization-tietoja ei lueta eikä tallenneta tässä versiossa.";
-});
+document.getElementById("search").onclick=search;
+document.getElementById("selectAll").onclick=()=>coursesEl.querySelectorAll("input").forEach(x=>x.checked=true);
+document.getElementById("clearAll").onclick=()=>coursesEl.querySelectorAll("input").forEach(x=>x.checked=false);
 
 loadCourses();

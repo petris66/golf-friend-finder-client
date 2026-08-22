@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fi">
 <head>
 <meta charset="UTF-8">
@@ -8,24 +8,28 @@
 </head>
 <body>
 <main class="container">
-  <h1>Golf Friend Finder</h1>
-  <p class="lead">Valitse päivä ja kentät.</p>
+<h1>Golf Friend Finder</h1>
 
-  <label class="field">
-    <span>Päivä</span>
-    <input id="date" type="date">
-  </label>
+<label>Pelaajat</label>
+<input id="player" type="text" placeholder="Esim. Markku, Matti, Pekka">
 
-  <h2>Kentät</h2>
-  <div id="courses" class="courses"></div>
+<label>Haku</label>
+<select id="days">
+  <option value="1">Tänään</option>
+  <option value="7" selected>Seuraavat 7 päivää</option>
+</select>
 
-  <button id="search" type="button">Hae varaukset</button>
-  <button id="wisegolf-test" class="secondary" type="button">WiseGolf-testi</button>
+<h2>Kentät</h2>
+<div class="course-actions">
+<button id="selectAll">Valitse kaikki</button>
+<button id="clearAll">Tyhjennä</button>
+</div>
 
-  <section class="results-section">
-    <h2>Tulokset</h2>
-    <div id="results" class="results">Ei vielä hakua.</div>
-  </section>
+<div id="courses" class="courses"></div>
+
+<button id="search">Hae varaukset</button>
+
+<div id="results" class="results">Ei vielä hakua.</div>
 </main>
 <script src="app.js"></script>
 </body>
